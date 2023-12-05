@@ -2,15 +2,15 @@
 import os
 import subprocess
 
-def initiate_shutdown():
-    subprocess.run(['gnome-terminal', '--', 'bash', '-c', 'shutdown -h now'])
+def initiate_shutdown(superuser, password):
+    subprocess.run(['gnome-terminal', '--', 'bash', '-c', f'echo {password} | sudo -S -u {superuser} shutdown -h now'])
 
-def create_shutdown_shortcut(shortcut_path=None):
-    script_content = """
+def create_shutdown_shortcut(superuser, password, shortcut_path=None):
+    script_content = f"""
 import subprocess
 
 def initiate_shutdown():
-    subprocess.run(['gnome-terminal', '--', 'bash', '-c', 'shutdown -h now'])
+    subprocess.run(['gnome-terminal', '--', 'bash', '-c', f'echo {password} | sudo -S -u {superuser} shutdown -h now'])
 
 if __name__ == "__main__":
     initiate_shutdown()
@@ -35,5 +35,7 @@ if __name__ == "__main__":
     os.chmod(shortcut_path, 0o755)
 
 if __name__ == "__main__":
-    create_shutdown_shortcut()
-    initiate_shutdown()
+    superuser = 'oem'  # Replace with your superuser username
+    password = 'your_password'  # Replace with your actual password
+    create_shutdown_shortcut(superuser, password)
+    initiate_shutdown(superuser, password)
