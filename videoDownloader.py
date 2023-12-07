@@ -51,7 +51,7 @@ def download_videos_from_playlist(playlist_url, save_path='.'):
 
 if __name__ == "__main__":
     # Replace 'your_youtube_playlist_url' with the actual YouTube playlist URL
-    playlist_url = 'https://www.youtube.com/playlist?list=PLLKT__MCUeixqHJ1TRqrHsEd6_EdEvo47'
+    playlist_url = ' '
 
     # Replace 'your_save_path' with the directory where you want to save the downloaded videos
-    download_videos_from_playlist(playlist_url, save_path='F:/LearningVideos')
+    download_videos_from_playlist(playlist_url, save_path=' ')
