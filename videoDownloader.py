@@ -1,12 +1,20 @@
 import os
-import requests
+from selenium import webdriver
 from bs4 import BeautifulSoup
 from pytube import YouTube
 
 def get_playlist_videos(playlist_url):
     try:
-        response = requests.get(playlist_url)
-        soup = BeautifulSoup(response.text, 'html.parser')
+        # Use Selenium to open a browser and fetch the dynamically loaded content
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')  # Run Chrome in headless mode (without GUI)
+        driver = webdriver.Chrome(options=options)
+        driver.get(playlist_url)
+        page_source = driver.page_source
+        driver.quit()
+
+        # Parse the HTML content
+        soup = BeautifulSoup(page_source, 'html.parser')
 
         # Extract video URLs from the playlist
         video_urls = [a['href'] for a in soup.find_all('a', {'class': 'yt-simple-endpoint style-scope ytd-playlist-video-renderer'})]
@@ -43,7 +51,7 @@ def download_videos_from_playlist(playlist_url, save_path='.'):
 
 if __name__ == "__main__":
     # Replace 'your_youtube_playlist_url' with the actual YouTube playlist URL
-    playlist_url = 'your_youtube_playlist_url'
+    playlist_url = 'https://www.youtube.com/playlist?list=PLLKT__MCUeixqHJ1TRqrHsEd6_EdEvo47'
 
     # Replace 'your_save_path' with the directory where you want to save the downloaded videos
-    download_videos_from_playlist(playlist_url, save_path='your_save_path')
+    download_videos_from_playlist(playlist_url, save_path='F:/LearningVideos')
