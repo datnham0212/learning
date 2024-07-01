@@ -1,6 +1,7 @@
 import random
 import secrets
 import string
+import bcrypt
 
 def generate_password_part(min_length=5, max_length=10, include_digits=True, include_special_chars=True):
     # Define character sets
@@ -29,13 +30,22 @@ def shuffle_password_parts(pass_parts):
     return password
 
 # Example usage with a loop to generate multiple password parts
-pass_parts_num = 3  # Change this number to generate a different count of password parts
+pass_parts_num = random.randint(2,4)  # Change this number to generate a different count of password parts
 
 pass_parts = [generate_password_part() for _ in range(pass_parts_num)]
+
 
 # Shuffle the password parts and get the final password
 password = shuffle_password_parts(pass_parts)
 
-print("Generated Password Parts:", pass_parts)
-print("Shuffled Password:", password)
-print("Password Length:", len(password))
+bytes = password.encode('utf-16-le')
+salt = bcrypt.gensalt(5)
+
+hash = bcrypt.hashpw(bytes, salt)
+
+print(hash)
+
+# print("Generated Password Parts:", pass_parts)
+# print("Shuffled Password:", password)
+# print("Password Length:", len(password))
+# print("Hash: ", hash)
