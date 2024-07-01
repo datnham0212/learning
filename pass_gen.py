@@ -3,7 +3,7 @@ import secrets
 import string
 import bcrypt
 
-def generate_password_part(min_length=5, max_length=10, include_digits=True, include_special_chars=True):
+def generate_password_part(min_length=random.randint(5,10), max_length=random.randint(10,21), include_digits=True, include_special_chars=True):
     # Define character sets
     lowercase_letters = string.ascii_lowercase
     uppercase_letters = string.ascii_uppercase
@@ -14,11 +14,11 @@ def generate_password_part(min_length=5, max_length=10, include_digits=True, inc
     all_chars = lowercase_letters + uppercase_letters + digits + special_chars
 
     # Determine password length within the specified range
-    length = random.randint(min_length, max_length) 
+    length = max_length 
 
     # Shuffle the characters using list conversion and shuffling
     password_part = ''.join(secrets.choice(all_chars) for _ in range(length))
-
+    
     return password_part
 
 def shuffle_password_parts(pass_parts):
@@ -29,23 +29,27 @@ def shuffle_password_parts(pass_parts):
     
     return password
 
+def hashing(temp):
+    byte1 = temp.encode('utf-16-be')
+    byte2 = temp.encode('utf-16-le')
+    byte3 = temp.encode('utf-8')
+    bytes = byte1 + byte2 + byte3
+    salts = bcrypt.gensalt(random.randint(5,11))
+    hash = bcrypt.hashpw(bytes, salts)
+    return hash
+
 # Example usage with a loop to generate multiple password parts
 pass_parts_num = random.randint(2,4)  # Change this number to generate a different count of password parts
 
 pass_parts = [generate_password_part() for _ in range(pass_parts_num)]
 
 
-# Shuffle the password parts and get the final password
-password = shuffle_password_parts(pass_parts)
+# Shuffle the password parts and get the temp
+final_password = shuffle_password_parts(pass_parts)
 
-bytes = password.encode('utf-16-le')
-salt = bcrypt.gensalt(5)
+#Masking
+hashed = hashing(final_password)
+final_pass_masked = hashed[0:len(hashed):5].hex()
 
-hash = bcrypt.hashpw(bytes, salt)
-
-print(hash)
-
-# print("Generated Password Parts:", pass_parts)
-# print("Shuffled Password:", password)
-# print("Password Length:", len(password))
-# print("Hash: ", hash)
+print("Password: " ,final_password)
+print("Mask: " ,final_pass_masked)
