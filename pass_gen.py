@@ -3,7 +3,7 @@ import secrets
 import string
 import bcrypt
 
-def generate_password_part(min_length=random.randint(5,10), max_length=random.randint(10,21), include_digits=True, include_special_chars=True):
+def generate_password_part(random_length=random.randint(10,21), include_digits=True, include_special_chars=True):
     # Define character sets
     lowercase_letters = string.ascii_lowercase
     uppercase_letters = string.ascii_uppercase
@@ -14,7 +14,7 @@ def generate_password_part(min_length=random.randint(5,10), max_length=random.ra
     all_chars = lowercase_letters + uppercase_letters + digits + special_chars
 
     # Determine password length within the specified range
-    length = max_length 
+    length = random_length 
 
     # Shuffle the characters using list conversion and shuffling
     password_part = ''.join(secrets.choice(all_chars) for _ in range(length))
@@ -29,6 +29,7 @@ def shuffle_password_parts(pass_parts):
     
     return password
 
+#Make shit more convoluted!
 def hashing(temp):
     byte1 = temp.encode('utf-16-be')
     byte2 = temp.encode('utf-16-le')
