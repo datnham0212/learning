@@ -19,6 +19,24 @@ int uniqueChar(char *word){
     return ucount;
 }
 
+void initializeTemp(char *temp, int wordLength){
+    for(int i = 0; i < wordLength; i++){
+        temp[i] = '_'; 
+    }    
+    
+    temp[wordLength] = '\0';
+}
+
+int searching(char *temp, char *word, char guess){
+    char *found;
+    found = strchr(word, guess);
+    
+    while(found != NULL){
+        temp[found-word] = guess;
+        found = strchr(found+1, guess);
+    }
+}
+
 int main()
 {
     printf("Hangman\n");
@@ -33,11 +51,7 @@ int main()
     
     char temp[wordLength+1];
     
-    for(int i = 0; i < wordLength; i++){
-        temp[i] = '_'; 
-    }    
-    
-    temp[wordLength] = '\0';
+    initializeTemp(temp, wordLength);
     
     while(turns > 0){
         printf("Guess the word: ");
@@ -45,14 +59,8 @@ int main()
         
         scanf("\n%c", &guess);
         
-        char *found;
+        searching(temp, word, guess);
         
-        found = strchr(word, guess);
-        
-        while(found != NULL){
-            temp[found-word] = guess;
-            found = strchr(found+1, guess);
-        }
         turns--;
     }
     printf("\nResult: %s", word);
