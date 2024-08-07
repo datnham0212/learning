@@ -29,20 +29,32 @@ int main()
     
     int turns = uniqueChar(word);
     
-    printf("%d", turns);
-    printf("Guess the word: ");
+    int wordLength = strlen(word);
+    
+    char temp[wordLength+1];
+    
+    for(int i = 0; i < wordLength; i++){
+        temp[i] = '_'; 
+    }    
+    
+    temp[wordLength] = '\0';
+    
     while(turns > 0){
-        scanf("%c", &guess);
+        printf("Guess the word: ");
+        printf("%s\n", temp);
+        
+        scanf("\n%c", &guess);
         
         char *found;
         
         found = strchr(word, guess);
-        for(int i = 0; i < sizeof(word); i++){
-            if(found != NULL){
-                printf("%c at %ld\n", guess, found-word+1);
-                found = strchr(found+1, guess);
-            }
-        }    
+        
+        while(found != NULL){
+            temp[found-word] = guess;
+            found = strchr(found+1, guess);
+        }
+        turns--;
     }
+    printf("\nResult: %s", word);
     return 0;
 }
