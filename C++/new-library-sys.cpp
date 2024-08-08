@@ -2,12 +2,13 @@
 #include <string>
 
 class Book {
-    public:
+    private:
         std::string isbn;
         std::string title;
         std::string author;
         int yearPublished;
-        
+    
+    public:
         Book();
         
         Book(std::string isbn, std::string title, std::string author, int yearPublished) {
@@ -17,10 +18,34 @@ class Book {
             this->yearPublished = yearPublished;
         };
         
+        void setTitle(std::string isbn, std::string title){
+            this->title = title;
+        };
+        
+        void setAuthor(std::string isbn, std::string author){
+            this->author = author;
+        };
+        
+        void setYearPublished(std::string isbn, int yearPublished){
+            this->yearPublished = yearPublished;
+        };
+    
+        std::string getTitle(){
+            return title;
+        }
+        
+        std::string getAuthor(){
+            return author;
+        }
+        
+        int getYearPublished(){
+            return yearPublished;
+        }
+    
         std::string bookInfo(){
             return '\n' + isbn + '\n' + title + '\n' + author + '\n' + std::to_string(yearPublished);
         };
-        
+
 };
 
 Book::Book(){
@@ -36,13 +61,19 @@ Book::Book(){
     std::cout << "\nYear published? ";
     std::cin >> yearPublished;
     
-}
+};
 
 int main()
 {
-    Book book;
+    // Book book1;
     
-    std::cout << book.bookInfo() << std::endl;
+    // std::cout << book1.bookInfo() << std::endl;
+    
+    Book book2("11111111", "Jackass", "Jack", 1234);
+    
+    book2.setYearPublished("11111111",2024);
+    
+    std::cout << book2.bookInfo() << std::endl;
 
     return 0;
 }
